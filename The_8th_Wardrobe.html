@@ -1,0 +1,879 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE 8TH WARDROBEE | CSC 106 Lab ASSEEMENT</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark: #222;
+            --light: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: #333;
+        }
+
+        header {
+            background: var(--dark);
+            color: white;
+            padding: 1rem 2rem;
+            border-bottom: 4px solid var(--gold);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            border: 3px solid var(--gold);
+            flex-shrink: 0;
+        }
+
+        .header-logo .brand-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .header-logo .brand-tagline {
+            font-size: 0.78rem;
+            color: #ccc;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        .header-center {
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-contact {
+            text-align: right;
+            font-size: 0.85rem;
+            color: white;
+            line-height: 1.8;
+        }
+
+        .header-contact a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .header-contact a:hover {
+            color: var(--gold);
+        }
+
+        .header-contact span {
+            display: block;
+        }
+
+        .marquee-container {
+            background: #cc0000;
+            color: white;
+            font-weight: bold;
+            padding: 10px 0;
+            border-bottom: 2px solid #900;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: inline-block;
+            animation: marqueeScroll 22s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            from { transform: translateX(100vw); }
+            to   { transform: translateX(-100%); }
+        }
+
+        nav {
+            background: #333;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--gold);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            min-height: 400px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #eee;
+            border-radius: 4px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+        }
+
+        input, select, textarea, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background: var(--dark);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: var(--gold);
+            color: black;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--dark);
+            color: white;
+        }
+
+        .page { display: none; }
+        .active { display: block; }
+
+        /* ── Star Rating ── */
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin: 10px 0 4px;
+        }
+
+        .star-rating span {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.2s, transform 0.15s;
+            user-select: none;
+        }
+
+        .star-rating span:hover,
+        .star-rating span.hovered,
+        .star-rating span.selected {
+            color: var(--gold);
+            transform: scale(1.2);
+        }
+
+        .rating-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        /* ── Chatbox ── */
+        .chat-section {
+            margin-top: 30px;
+            border-top: 2px solid var(--gold);
+            padding-top: 20px;
+        }
+
+        .chat-section h3 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .chat-section p.chat-subtitle {
+            font-size: 0.85rem;
+            color: #777;
+            margin: 0 0 12px;
+        }
+
+        #chatWindow {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            height: 280px;
+            overflow-y: auto;
+            padding: 14px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-bubble {
+            max-width: 78%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            word-wrap: break-word;
+            animation: bubbleIn 0.25s ease;
+        }
+
+        @keyframes bubbleIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-bubble.user {
+            background: var(--dark);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.bot {
+            background: #f0e8c8;
+            color: #222;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-bubble.typing {
+            background: #f0e8c8;
+            color: #888;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            font-style: italic;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        #chatInput {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 0.88rem;
+            outline: none;
+            margin-bottom: 0;
+            transition: border-color 0.2s;
+        }
+
+        #chatInput:focus {
+            border-color: var(--gold);
+        }
+
+        #chatSendBtn {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.88rem;
+            margin-bottom: 0;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        #chatSendBtn:hover {
+            background: var(--gold);
+            color: black;
+        }
+
+        /* ── Image Slider ── */
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+        }
+        .slide { min-width: 100%; position: relative; }
+        .slide img {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+        .slide-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.72));
+            color: white;
+            padding: 18px 20px 14px;
+        }
+        .slide-caption h3 { margin: 0 0 4px; font-size: 1.2rem; color: var(--gold); }
+        .slide-caption p { margin: 0; font-size: 0.85rem; opacity: 0.9; }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.55);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 10;
+            margin-bottom: 0;
+            transition: background 0.2s;
+            line-height: 1;
+        }
+        .slider-btn:hover { background: var(--gold); color: black; }
+        .slider-btn.prev { left: 10px; }
+        .slider-btn.next { right: 10px; }
+        .slider-dots { text-align: center; padding: 10px 0 4px; }
+        .dot {
+            display: inline-block;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 4px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .dot.active { background: var(--gold); transform: scale(1.3); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="header-logo">
+                <div class="logo-icon">👗</div>
+            </div>
+            <div class="header-center">
+                <div class="brand-name">THE 8TH WARDROBE</div>
+                <div class="brand-tagline">fashion Redefined</div>
+            </div>
+            <div class="header-contact">
+                <span>📧 <a href="mailto:info@auracouture.com">info@the8thwardrobe.com</a></span>
+                <span>📞 <a href="tel:+2348001234567">+234 800 00000</a></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="marquee-container">
+        <span class="marquee-track">🔥 Upcoming Events: Black Friday Sales March 27, 2026 | New Arrivals in Store Now! | Book your Appoitnment today! 🔥</span>
+    </div>
+
+    <nav>
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('products')">Products</a>
+        <a onclick="showPage('trustees')">Trustees</a>
+        <a onclick="showPage('events')">Events</a>
+        <a onclick="showPage('contact')">Appointments</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- HOME PAGE -->
+        <section id="home" class="page active">
+            <!-- ── IMAGE SLIDER ── -->
+            <div class="slider-wrapper">
+                <div class="slides" id="sliderTrack">
+                    <div class="slide">
+                        <img src="clothe3.jpg" alt="New Collection">
+                        <div class="slide-caption"><h3>New Collection 2026</h3><p>Discover our latest bespoke designs crafted for the modern elite.</p></div>
+                    </div>
+                    <div class="slide">
+                        <img src="clothe1.jpg" alt="Midnight Silk Gown">
+                        <div class="slide-caption"><h3>Midnight Silk Gown</h3><p>Hand-stitched premium silk — elegance that speaks without words.</p></div>
+                    </div>
+                    <div class="slide">
+                        <img src="shoe2.jpg" alt="Executive Suit">
+                        <div class="slide-caption"><h3>Executive Slim-Fit</h3><p>Command every step, with precision.</p></div>
+                    </div>
+                    <div class="slide">
+                        <img src="shoe1.jpg" alt="Boho Line">
+                        <div class="slide-caption"><h3>Fitting Multiouting Shoe</h3><p>Lightweight fabrics and free-design for flexible movement.</p></div>
+                    </div>
+                </div>
+                <button class="slider-btn prev" onclick="moveSlide(-1)">&#8249;</button>
+                <button class="slider-btn next" onclick="moveSlide(1)">&#8250;</button>
+            </div>
+            <div class="slider-dots" id="sliderDots"></div>
+            <div style="text-align:center; padding: 6px 0 16px;">
+                <div class="star-rating" id="sliderStarRating">
+                    <span onclick="setSliderRating(1)" onmouseenter="hoverSliderRating(1)" onmouseleave="clearSliderHover()">★</span>
+                    <span onclick="setSliderRating(2)" onmouseenter="hoverSliderRating(2)" onmouseleave="clearSliderHover()">★</span>
+                    <span onclick="setSliderRating(3)" onmouseenter="hoverSliderRating(3)" onmouseleave="clearSliderHover()">★</span>
+                    <span onclick="setSliderRating(4)" onmouseenter="hoverSliderRating(4)" onmouseleave="clearSliderHover()">★</span>
+                    <span onclick="setSliderRating(5)" onmouseenter="hoverSliderRating(5)" onmouseleave="clearSliderHover()">★</span>
+                </div>
+                <div class="rating-label" id="slider-rating-label">Rate this collection</div>
+            </div>
+
+            <h1 style="text-align: center;">WELCOME TO THE 8TH WARDROBE</h1>
+            <p>A premier fashion destination for the modern era. We specialize in bespoke tailoring and high-fashion ready-to-wear collections.</p>
+            <p>Click through our navigation to see our latest works and meet the board.</p>
+
+            <!-- ── CHATBOX ── -->
+            <div class="chat-section">
+                <h3>💬 Chat with Our AI Assistant</h3>
+                <p class="chat-subtitle">Have a question? Our AI stylist is here to help.</p>
+
+                <div id="chatWindow">
+                    <div class="chat-bubble bot">
+                        Hello! Welcome to The 8th WARDROBE 👗 I'm your personal style assistant. Ask me about our collections, events, or how to book an appointment!
+                    </div>
+                </div>
+
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="Type your message…" maxlength="300" />
+                    <button id="chatSendBtn" onclick="sendMessage()">Send ✈</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS PAGE -->
+        <section id="products" class="page">
+            <h2>Our Collections</h2>
+            <div class="grid">
+                <div class="card">
+                    <img src="wo1.jpg" alt="Gown">
+                    <h3>Midnight Silk Gown</h3>
+                    <p>Hand-stitched premium silk.</p>
+                    <div class="star-rating" data-product="gown">
+                        <span onclick="setRating('gown',1)" onmouseenter="hoverRating('gown',1)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',2)" onmouseenter="hoverRating('gown',2)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',3)" onmouseenter="hoverRating('gown',3)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',4)" onmouseenter="hoverRating('gown',4)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',5)" onmouseenter="hoverRating('gown',5)" onmouseleave="clearHover('gown')">★</span>
+                    </div>
+                    <div class="rating-label" id="gown-label">Tap to rate</div>
+                </div>
+
+                <div class="card">
+                    <img src="clothe5.jpg" alt="Suit">
+                    <h3>Executive Slim-Fit</h3>
+                    <p>Professional elegance for the boardroom.</p>
+                    <div class="star-rating" data-product="suit">
+                        <span onclick="setRating('suit',1)" onmouseenter="hoverRating('suit',1)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',2)" onmouseenter="hoverRating('suit',2)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',3)" onmouseenter="hoverRating('suit',3)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',4)" onmouseenter="hoverRating('suit',4)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',5)" onmouseenter="hoverRating('suit',5)" onmouseleave="clearHover('suit')">★</span>
+                    </div>
+                    <div class="rating-label" id="suit-label">Tap to rate</div>
+                </div>
+
+                <div class="card">
+                    <img src="wo5.jpg" alt="Boho">
+                    <h3>Summer Boho Line</h3>
+                    <p>Lightweight and breathable fabrics.</p>
+                    <div class="star-rating" data-product="boho">
+                        <span onclick="setRating('boho',1)" onmouseenter="hoverRating('boho',1)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',2)" onmouseenter="hoverRating('boho',2)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',3)" onmouseenter="hoverRating('boho',3)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',4)" onmouseenter="hoverRating('boho',4)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',5)" onmouseenter="hoverRating('boho',5)" onmouseleave="clearHover('boho')">★</span>
+                    </div>
+                    <div class="rating-label" id="boho-label">Tap to rate</div>
+                </div>
+				<div class="card">
+                    <img src="clothe7.jpg" alt="Gown">
+                    <h3>Agbada Men Styles</h3>
+                    <p>Hand-stitched premium silk.</p>
+                    <div class="star-rating" data-product="gown">
+                        <span onclick="setRating('gown',1)" onmouseenter="hoverRating('gown',1)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',2)" onmouseenter="hoverRating('gown',2)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',3)" onmouseenter="hoverRating('gown',3)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',4)" onmouseenter="hoverRating('gown',4)" onmouseleave="clearHover('gown')">★</span>
+                        <span onclick="setRating('gown',5)" onmouseenter="hoverRating('gown',5)" onmouseleave="clearHover('gown')">★</span>
+                    </div>
+                    <div class="rating-label" id="gown-label">Tap to rate</div>
+                </div>
+
+                <div class="card">
+                    <img src="wo1.jpg" alt="Suit">
+                    <h3>Mand for the city Women</h3>
+                    <p>Professional elegance for Women.</p>
+                    <div class="star-rating" data-product="suit">
+                        <span onclick="setRating('suit',1)" onmouseenter="hoverRating('suit',1)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',2)" onmouseenter="hoverRating('suit',2)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',3)" onmouseenter="hoverRating('suit',3)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',4)" onmouseenter="hoverRating('suit',4)" onmouseleave="clearHover('suit')">★</span>
+                        <span onclick="setRating('suit',5)" onmouseenter="hoverRating('suit',5)" onmouseleave="clearHover('suit')">★</span>
+                    </div>
+                    <div class="rating-label" id="suit-label">Tap to rate</div>
+                </div>
+
+                <div class="card">
+                    <img src="wo4.jpg" alt="Boho">
+                    <h3>Summer Boho Line</h3>
+                    <p>Lightweight and breathable fabrics.</p>
+                    <div class="star-rating" data-product="boho">
+                        <span onclick="setRating('boho',1)" onmouseenter="hoverRating('boho',1)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',2)" onmouseenter="hoverRating('boho',2)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',3)" onmouseenter="hoverRating('boho',3)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',4)" onmouseenter="hoverRating('boho',4)" onmouseleave="clearHover('boho')">★</span>
+                        <span onclick="setRating('boho',5)" onmouseenter="hoverRating('boho',5)" onmouseleave="clearHover('boho')">★</span>
+                    </div>
+                    <div class="rating-label" id="boho-label">Tap to rate</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUSTEES PAGE -->
+        <section id="trustees" class="page">
+            <h1 style="text-align: center;">THESE ARE BOARD OF TRUSTEES MEMBERS</h1>>
+            <div class="grid">
+                <div class="card">
+                    <img src="trustees/shegun.jpg" alt="Member">
+                    <h3>Mr. Shegun</h3>
+                    <p>Board Chairman</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/john.jpg" alt="Member">
+                    <h3>Mr. John Gumuan</h3>
+                    <p>Board Secretary</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/adewumi.jpg" alt="Member">
+                    <h3>Ms Adewunmi</h3>
+                    <p>Member</p>
+                </div>
+				<div class="card">
+                    <img src="trustees/david.jpg" alt="Member">
+                    <h3>Mr. alafun</h3>
+                    <p>Member</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/chisom.jpg" alt="Member">
+                    <h3>Ms chisom</h3>
+                    <p>Member</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/Adewale.jpg" alt="Member">
+                    <h3>Mr. Adewale</h3>
+                    <p>Member</p>
+                </div>
+				<div class="card">
+                    <img src="trustees/Devine.jpg" alt="Member">
+                    <h3>Ms Devine</h3>
+                    <p>Member</p>
+                </div>
+				<div class="card">
+                    <img src="trustees/purpose.jpg" alt="Member">
+                    <h3>Ms Purpose</h3>
+                    <p>Member</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/michael.jpg" alt="Member">
+                    <h3>Mr. Michael</h3>
+                    <p>Member</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/joshua.jpg" alt="Member">
+                    <h3>Mr. Joshua</h3>
+                    <p>Member</p>
+                </div>
+				<div class="card">
+                    <img src="trustees/gbolahan.jpg" alt="Member">
+                    <h3>Mr. Gboloahan</h3>
+                    <p>Member</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/Hafsat.jpg" alt="Member">
+                    <h3>Ms Hafsat</h3>
+                    <p>Member</p>
+                </div>
+                <div class="card">
+                    <img src="trustees/faith2" alt="Member">
+                    <h3>Ms Faith</h3>
+                    <p>Member</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENTS PAGE -->
+        <section id="events" class="page">
+            <h2>Upcoming Fashion Events</h2>
+            <table border="0" width="100%" cellpadding="10">
+                <tr style="background:#eee;">
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                </tr>
+                <tr>
+                    <td>Lagos Fashion Week</td>
+                    <td>October 12, 2026</td>
+                    <td>Eko Hotel</td>
+                </tr>
+                <tr>
+                    <td>Aura Summer Gala</td>
+                    <td>July 05, 2026</td>
+                    <td>Grand Hall</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- CONTACT / APPOINTMENT PAGE -->
+        <section id="contact" class="page">
+            <h2>Book an Appointment</h2>
+            <form id="appointmentForm">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" required placeholder="Enter your name">
+
+                <label for="date">Preferred Date:</label>
+                <input type="date" id="date" required>
+
+                <label for="service">Service Type:</label>
+                <select id="service">
+                    <option value="Fitting">Custom Fitting</option>
+                    <option value="Consultation">Style Consultation</option>
+                    <option value="Bulk">Wholesale Inquiry</option>
+                </select>
+
+                <label for="feedback">Additional Comments / Feedback:</label>
+                <textarea id="feedback" rows="4" placeholder="Share any special requests, preferences, or feedback for our team…" style="resize: vertical;"></textarea>
+
+                <button type="submit">Submit Request</button>
+            </form>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 MIVA Open University All Rights Reserved</p>
+    </footer>
+
+    <script>
+
+        /* ── Image Slider Logic ── */
+        let currentSlide = 0;
+        const totalSlides = 4;
+        let sliderTimer;
+
+        function buildDots() {
+            const dotsEl = document.getElementById('sliderDots');
+            dotsEl.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const d = document.createElement('span');
+                d.className = 'dot' + (i === 0 ? ' active' : '');
+                d.onclick = () => goToSlide(i);
+                dotsEl.appendChild(d);
+            }
+        }
+
+        function updateSlider() {
+            document.getElementById('sliderTrack').style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+            syncSliderRating();
+        }
+
+        function moveSlide(dir) {
+            currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+            updateSlider();
+            resetTimer();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+            resetTimer();
+        }
+
+        function resetTimer() {
+            clearInterval(sliderTimer);
+            sliderTimer = setInterval(() => moveSlide(1), 4000);
+        }
+
+        buildDots();
+        resetTimer();
+
+        /* ── Page Navigation ── */
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            console.log("Current Page DOM Fragment:", document.getElementById(pageId));
+        }
+
+        /* ── Form Submission ── */
+        document.getElementById('appointmentForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const feedback = document.getElementById('feedback').value.trim();
+            const msg = feedback
+                ? "Thank you " + name + "! Your appointment inquiry and feedback have been received. We'll be in touch soon."
+                : "Thank you " + name + "! Your appointment inquiry has been received. We'll be in touch soon.";
+            alert(msg);
+        };
+
+        window.onload = () => {
+            console.log("Website DOM Structure Initialized:", document.body);
+            // Enter key sends chat
+            document.getElementById('chatInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') sendMessage();
+            });
+        };
+
+        /* ══════════════════════════════
+           STAR RATINGS
+        ══════════════════════════════ */
+        const ratings = {};
+
+        function getStars(product) {
+            return document.querySelectorAll(`.star-rating[data-product="${product}"] span`);
+        }
+
+        function hoverRating(product, value) {
+            getStars(product).forEach((s, i) => {
+                s.classList.toggle('hovered', i < value);
+            });
+        }
+
+        function clearHover(product) {
+            const saved = ratings[product] || 0;
+            getStars(product).forEach((s, i) => {
+                s.classList.remove('hovered');
+                s.classList.toggle('selected', i < saved);
+            });
+        }
+
+        function setRating(product, value) {
+            ratings[product] = value;
+            getStars(product).forEach((s, i) => {
+                s.classList.toggle('selected', i < value);
+                s.classList.remove('hovered');
+            });
+            const labels = { 1: '⭐ Poor', 2: '⭐⭐ Fair', 3: '⭐⭐⭐ Good', 4: '⭐⭐⭐⭐ Great', 5: '⭐⭐⭐⭐⭐ Excellent!' };
+            document.getElementById(product + '-label').textContent = labels[value];
+        }
+
+        /* ══════════════════════════════
+           AI CHATBOX (Claude API)
+        ══════════════════════════════ */
+        const conversationHistory = [];
+
+        const SYSTEM_PROMPT = `You are Aura, a friendly and knowledgeable fashion assistant for Aura Couture, a luxury fashion brand. 
+You help visitors with:
+- Information about our collections: Midnight Silk Gown, Executive Slim-Fit Suit, Summer Boho Line
+- Upcoming events: Lagos Fashion Week (Oct 12, 2025, Eko Hotel) and Aura Summer Gala (July 5, 2025, Grand Hall)
+- Booking appointments for Custom Fitting, Style Consultation, or Wholesale Inquiry
+- General fashion advice and style tips
+Keep your tone warm, elegant, and concise. Responses should be 1-3 sentences unless a detailed answer is needed.`;
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            appendBubble(text, 'user');
+
+            conversationHistory.push({ role: 'user', content: text });
+
+            const typingEl = appendBubble('Aura is typing…', 'typing');
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        system: SYSTEM_PROMPT,
+                        messages: conversationHistory
+                    })
+                });
+
+                const data = await response.json();
+                const reply = data.content && data.content[0] ? data.content[0].text : "I'm sorry, I couldn't get a response. Please try again.";
+
+                typingEl.remove();
+                appendBubble(reply, 'bot');
+                conversationHistory.push({ role: 'assistant', content: reply });
+
+            } catch (err) {
+                typingEl.remove();
+                appendBubble("Oops! I'm having trouble connecting right now. Please try again shortly.", 'bot');
+                console.error('Chat error:', err);
+            }
+        }
+
+        function appendBubble(text, type) {
+            const win = document.getElementById('chatWindow');
+            const bubble = document.createElement('div');
+            bubble.className = `chat-bubble ${type}`;
+            bubble.textContent = text;
+            win.appendChild(bubble);
+            win.scrollTop = win.scrollHeight;
+            return bubble;
+        }
+    </script>
+</body>
+</html>
